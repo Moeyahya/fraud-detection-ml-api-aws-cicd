@@ -47,14 +47,22 @@ jobs:
         cache-to: type=gha,mode=max
 
     - name: Set up Kubernetes
-      if: ${{ secrets.KUBE_CONFIG }}
+      id: setup-kube
       uses: azure/setup-kubectl@v3
+      continue-on-error: true
 
     - name: Deploy to Kubernetes
-      if: ${{ secrets.KUBE_CONFIG }}
+      if: steps.setup-kube.outcome == 'success' && env.KUBE_CONFIG != ''
+      env:
+        KUBE_CONFIG: ${{ secrets.KUBE_CONFIG }}
       run: |
+        if [ -z "$KUBE_CONFIG" ]; then
+          echo "No KUBE_CONFIG set, skipping deployment"
+          exit 0
+        fi
+        
         mkdir -p ~/.kube
-        echo "${{ secrets.KUBE_CONFIG }}" > ~/.kube/config
+        echo "$KUBE_CONFIG" > ~/.kube/config
         chmod 600 ~/.kube/config
         
         kubectl apply -f deployments/deployment.yaml
