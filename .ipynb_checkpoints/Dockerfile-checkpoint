@@ -1,0 +1,33 @@
+FROM python:3.10-slim
+
+WORKDIR /app
+
+# Install system dependencies
+RUN apt-get update && apt-get install -y \
+    gcc \
+    python3-dev \
+    && rm -rf /var/lib/apt/lists/*
+
+# Copy requirements first
+COPY requirements.txt .
+RUN pip install --no-cache-dir -r requirements.txt
+
+# Copy model file
+COPY models/fraud_model.joblib /models/
+
+# Copy application code
+COPY src/ ./src/
+COPY app.py .
+COPY config.py .
+
+# Verify files
+RUN ls -la /models/fraud_model.joblib && \
+    ls -la /app/app.py && \
+    ls -la /app/config.py
+
+# Environment variables
+ENV MODEL_PATH=/models/fraud_model.joblib
+ENV FLASK_APP=app.py
+
+EXPOSE 8080
+CMD ["python", "-c", "from waitress import serve; from app import app; serve(app, host='0.0.0.0', port=8080)"]

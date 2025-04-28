@@ -1,0 +1,34 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: fraud-detection-api
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: fraud-detection
+  template:
+    metadata:
+      labels:
+        app: fraud-detection
+    spec:
+      containers:
+      - name: fraud-api
+        image: fraud-detection-api:latest
+        imagePullPolicy: Never
+        ports:
+        - containerPort: 8080
+        volumeMounts:
+        - mountPath: /app/models  # Container path
+          name: models-volume
+        - mountPath: /app/logs
+          name: logs-volume
+      volumes:  # Must be at the same level as 'containers'
+      - name: models-volume
+        hostPath:
+          path: /run/desktop/mnt/host/c/Projects/fraud_detection/src/models  # WSL 2 host path
+          type: Directory
+      - name: logs-volume
+        hostPath:
+          path: /run/desktop/mnt/host/c/Projects/fraud_detection/src/logs
+          type: Directory
