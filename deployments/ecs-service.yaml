@@ -1,0 +1,13 @@
+service: fraud-detection-service
+cluster: fraud-api-cluster
+taskDefinition: fraud-detection-task
+desiredCount: 1
+launchType: FARGATE
+networkConfiguration:
+  awsvpcConfiguration:
+    subnets:
+      - subnet-12345678  # ← Replace with your subnet
+      - subnet-87654321  # ← Replace with your subnet
+    securityGroups:
+      - sg-12345678     # ← Replace with your security group
+    assignPublicIp: ENABLED
