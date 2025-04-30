@@ -17,16 +17,17 @@ COPY src/ ./src/
 COPY app.py .
 COPY config.py .
 
-# Create directories
-RUN mkdir -p /app/models /app/logs
+# Create data directory and copy sample data
+RUN mkdir -p /app/data
+COPY data/sample_fraud.csv /app/data/
+
+# Copy model file (must exist in build context)
+COPY models/fraud_model.joblib /app/models/
 
 # Environment variables
 ENV MODEL_PATH=/app/models/fraud_model.joblib
 ENV FLASK_APP=app.py
 ENV PYTHONPATH=/app
-
-# Copy model file (if exists)
-COPY models/fraud_model.joblib /app/models/ || echo "No model file found, will run in test mode"
 
 EXPOSE 8080
 CMD ["python", "-c", "from waitress import serve; from app import app; serve(app, host='0.0.0.0', port=8080)"]
