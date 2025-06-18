@@ -1,6 +1,4 @@
-# README.md - Fraud Detection ML API (End-to-End Production Deployment)
 
----
 
 # 🚀 Fraud Detection ML API with End-to-End CI/CD Deployment on AWS
 
