@@ -23,7 +23,7 @@
       "logConfiguration": {
         "logDriver": "awslogs",
         "options": {
-          "awslogs-group": "/ecs/fraud-detection",
+          "awslogs-group": "/ecs/fraud-detection-task",
           "awslogs-region": "ca-central-1",
           "awslogs-stream-prefix": "ecs"
         }

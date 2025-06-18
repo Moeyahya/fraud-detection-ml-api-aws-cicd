@@ -1,5 +1,5 @@
 service: fraud-detection-service
-cluster: fraud-api-cluster
+cluster: fraud-detection-cluster
 taskDefinition: fraud-detection-task
 desiredCount: 1
 launchType: FARGATE

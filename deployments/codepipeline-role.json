@@ -1,11 +1,10 @@
-// C:\Projects\fraud-detection-cicd\deployments\codebuild-role.json
 {
   "Version": "2012-10-17",
   "Statement": [
     {
       "Effect": "Allow",
       "Principal": {
-        "Service": "codebuild.amazonaws.com"
+        "Service": "codepipeline.amazonaws.com"
       },
       "Action": "sts:AssumeRole"
     }
